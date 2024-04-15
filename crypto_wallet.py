@@ -3,7 +3,7 @@
 
 # This file contains the Ethereum transaction functions that you have created throughout this module’s lessons.
 # By using import statements, you will integrate this `crypto_wallet.py` Python script
-# into the KryptoJobs2Go interface program that is found in the `krypto_jobs.py` file.
+# into the FameChain_Ballot interface program that is found in the `FameChainBallot.py` file.
 
 ################################################################################
 # Imports
