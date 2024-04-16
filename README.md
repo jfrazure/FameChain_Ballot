@@ -16,21 +16,31 @@ The nominees in question for this prestigious campaign are as follows:
 
 ## Elon Musk - CEO and Chairman, TechnoKing of Tesla Motors and SpaceX
 
+![Test Image 1](.png)
+
 Campaign Slogan:  "DogeCoin to the Moon!"
 
 ## Snoop Dogg - aka Calvin Cordozar Broadus, Jr., OG of Long Beach and World Famous American Rapper
+
+![Test Image 1](.png)
 
 Campaign Slogan:  "Scooping Up That Bizzy, Making you Dizzy"
 
 ##  Mike Tyson - former Boxing Heavyweght World Champion and Actor
 
+![Test Image 1](.png)
+
 Campaign Slogan:  "The Champ of Knocking Out Cash"
 
 ##  Billie Eilish - world famous performer and multiple Grammy, AMA, VMA Awards winner
 
+![Test Image 1](.png)
+
 Campaign Slogan:  "Bitcoin's Bad Girl"
 
 ## Paris Hilton - reality TV star and and heiress to the Hilton Group Hotel fortune
+
+![Test Image 1](.png)
 
 Campaign Slogan:  "That's Hot"
 
@@ -45,5 +55,20 @@ We plan to simulate the exchange votes
 The steps for this challenge are broken out into the following sections:
 
 * Build a Front-End Python script that will create a Streamlit application
-* Build a ReMix solution file that will accept digital wallet IDs and payments to secure simulate exchange member votes
+* Build a ReMix solution file that will accept digital wallet IDs and payments to secure simulated exchange member votes
 * Tabulate the results via Streamlit and name a winner (Celebrity Spokesperson), then tabulate funds raised for the exchange by the interactive vote.
+
+#### Step 1: 
+
+
+
+#### Step 2: 
+
+
+
+#### Step 3: 
+
+
+
+
+---
