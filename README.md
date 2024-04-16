@@ -16,31 +16,31 @@ The nominees in question for this prestigious campaign are as follows:
 
 ## Elon Musk - CEO and Chairman, TechnoKing of Tesla Motors and SpaceX
 
-![Test Image 1](.png)
+![Test Image 1](Images/Elon.png)
 
 Campaign Slogan:  "DogeCoin to the Moon!"
 
 ## Snoop Dogg - aka Calvin Cordozar Broadus, Jr., OG of Long Beach and World Famous American Rapper
 
-![Test Image 1](.png)
+![Test Image 1](Images/Snoop.png)
 
 Campaign Slogan:  "Scooping Up That Bizzy, Making you Dizzy"
 
 ##  Mike Tyson - former Boxing Heavyweght World Champion and Actor
 
-![Test Image 1](.png)
+![Test Image 1](Images/MikeTy.png)
 
 Campaign Slogan:  "The Champ of Knocking Out Cash"
 
 ##  Billie Eilish - world famous performer and multiple Grammy, AMA, VMA Awards winner
 
-![Test Image 1](.png)
+![Test Image 1](Images/BillieE.png)
 
 Campaign Slogan:  "Bitcoin's Bad Girl"
 
 ## Paris Hilton - reality TV star and and heiress to the Hilton Group Hotel fortune
 
-![Test Image 1](.png)
+![Test Image 1](Images/Parishil.png)
 
 Campaign Slogan:  "That's Hot"
 
