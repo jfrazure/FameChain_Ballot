@@ -120,7 +120,7 @@ The smart contract FameChainBallot.sol, pragma 0.8.0, defines the logic for the 
 * Metamask: Used as a browser extension to interact with the Ethereum blockchain.
 
 ## ***Team Members***
-### Jahun Moayezdzadeh
+### Jahun Moayedzadeh
 ### Daniela Catalan
 ### Jonathan Frazure
 
