@@ -1,99 +1,83 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.0;
+pragma solidity ^0.8.0;
 
-// create a smart contract to vote on the World wide Crypto Ambassador
-contract FameChainballot {
-
-    // candidates struct
+contract FameChainBallot {
     struct Candidate {
+        uint id;
         string name;
         string slogan;
-        uint256 voteCount;
+        uint voteCount;
     }
-    // Empty list of Candidates to poplulate
-    Candidate[] public candidates;
-    // owner of this contract
-    address owner;
-    // Mapping to store the voter's address and whether they have voted
+
+    address public owner;
     mapping(address => bool) public voters;
-    // Mapping to store the number of tokens assigned to each voter
-    mapping(address => uint256) public voterTokens;
-    // start and end times
-    uint public votingStarts;
+    // Candidate[] public candidates;
+    //bool public votingEnded;
+    mapping (uint => Candidate) public candidates;
+    uint public candidatesCount;
+
     uint public votingEnds;
-    uint private _votingDuration;
 
-// cadidates constructor
-    constructor(uint _voteDuration) {
-        candidates.push(Candidate("Mike Tyson", "The Champ of Knocking Out Cash", 0));
-        candidates.push(Candidate("Elon Musk", "Dogecoin To The Moon!", 0));
-        candidates.push(Candidate("Snoop Dog", "Scooping Up That Bizzy, Making you Dizzy ", 0));
-        candidates.push(Candidate("Paris Hilton", "That's Hot", 0));
-        candidates.push(Candidate("Billie Eilish", "Bitcoin's Bad Girl", 0));
-    // Set the voting start time as the current block timestamp
-        votingStarts = block.timestamp;
+    // Event to track when a vote is cast
+    //event VoteCast(address indexed voter, uint256 candidateIndex);
+    event voteEvent (uint indexed _candidateId);
+
+    constructor() {
+        owner = msg.sender;
+        votingEnds = block.timestamp + 24 hours; // change in DEMO to 2 mins
         
-        // Set the voting end time by adding the duration to the start time
-        votingEnds = block.timestamp + (_voteDuration * 1440 minutes); // voteDuration is 1 day
+        // Initialize candidates
+        addCandidate("Mike Tyson", "The Champ of Knocking Out Cash", 0);
+        addCandidate("Elon Musk", "Dogecoin To The Moon!", 0);
+        addCandidate("Snoop Dog", "Scooping Up That Bizzy, Making you Dizzy", 0);
+        addCandidate("Paris Hilton", "That's Hot", 0);
+        addCandidate("Billie Eilish", "Bitcoin's Bad Girl", 0);
     }
-// Register the Voters 
-    function registerVoter(address _voter, uint256 _tokens) external {
-            require(!voters[_voter], "Voter already registered");
-            voters[_voter] = true;
-            voterTokens[_voter] = _tokens;
-        }
-
-// function to vote
-    function vote(uint256 _candidateIndex) public {
-        require(voters[msg.sender], "Voter not registered");
-        require(_candidateIndex < candidates.length, "Invalid candidate index");
-        require(voterTokens[msg.sender] > 0, "Insufficient tokens to vote");
-        require(block.timestamp >= votingStarts && block.timestamp <= votingEnds, "Voting is not currently allowed");
-
-        // Decrement the token count of the voter
-        voterTokens[msg.sender]--;
-
+    // Add the candidates to the constructor
+    function addCandidate(string memory _name, string memory _slogan, uint _initialVoteCount) private {
+        candidatesCount++;
+        candidates[candidatesCount] = Candidate(candidatesCount, _name, _slogan, _initialVoteCount);
+}
+    function vote (uint _candidateId) public {
+        require(!voters[msg.sender], "You have already voted.");
+        require(block.timestamp <= votingEnds, "Voting has ended.");
+        require(_candidateId > 0 && _candidateId <= candidatesCount);
+        require(_candidateId < candidatesCount, "Invalid candidate index");
+        voters[msg.sender] = true;
         // Increment the vote count of the candidate
-        candidates[_candidateIndex].voteCount++;
-
-        // Emit event
-        emit VoteCast(msg.sender, _candidateIndex);
-    }
-// Event to track when a vote is cast
-    event VoteCast(address indexed voter, uint256 candidateIndex); 
-
-    // Function to get the total number of candidates
-    function getCandidateCount() external view returns (uint256) {
-        return candidates.length;
-    }
-
-    // Function to get the details of a candidate
-    function getCandidate(uint256 _index) external view returns (string memory, string memory, uint256) {
-        require(_index < candidates.length, "Invalid candidate index");
-        return (candidates[_index].name, candidates[_index].slogan, candidates[_index].voteCount);
+        candidates[_candidateId].voteCount ++;
+        // Emit Event
+        emit voteEvent(_candidateId);
+        
     }
     
-    // Function to check if voting is currently allowed
-    function isVotingAllowed() external view returns (bool) {
-        return (block.timestamp >= votingStarts && block.timestamp <= votingEnds);
-    }
-// calculate the votes
-    // Function to get the total votes for a candidate
-    function getTotalVotesForCandidate(uint256 _index) external view returns (uint256) {
-        require(_index < candidates.length, "Invalid candidate index");
-        return candidates[_index].voteCount;
-    }
-    // get all votes for the cadidates
-    function getAllVotesForCadidates() public view returns (Candidate[] memory){
-        return candidates;
-    }
-    // display the remaining time of the open ballot 
-    function getTimeRemaining() public view returns (uint256) {
-        require(block.timestamp >= votingStarts, "Ballot is not open yet!");
-        if  (block.timestamp >= votingEnds) {
-            return 0;
+    function getResults() public view returns (Candidate[] memory) {
+        require(block.timestamp > votingEnds, "Voting is still ongoing.");
+        Candidate[] memory results = new Candidate[](candidatesCount);
+        for (uint i = 1; i <= candidatesCount; i ++) {
+            results[i-1] = candidates[i];
         }
-        return votingEnds - block.timestamp;
+        return results;
     }
-
+    
+    function getCandidates(uint256 _index) public view returns (string memory, string memory, uint256) {
+    require(_index < candidatesCount, "Invalid candidate index");
+    
+    Candidate memory candidate = candidates[_index + 1]; // Adding 1 to the index to match the candidate ID
+    
+    return (candidate.name, candidate.slogan, candidate.voteCount);
+}
+    // get all votes for the cadidates
+    function getAllVotesForCandidates() public view returns (uint[] memory) {
+        uint[] memory votes = new uint[](candidatesCount);
+        for (uint i = 1; i <= candidatesCount; i++) {
+            votes[i-1] = candidates[i].voteCount;
+        }
+        return votes;
+    }
+    // function to get the votes for only one person at a time via indexes
+    function getTotalVotesForCandidate(uint _candidateId) public view returns (uint) {
+       require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID");
+       return candidates[_candidateId].voteCount;
+    }  
 }
