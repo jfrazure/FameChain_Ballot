@@ -8,11 +8,11 @@
 * [Background](#background)
 * [Overview](#overview)
 * [Features](#features)  
-* [How it Works](#how_it_works)
-* [Getting Started](#getting_started)
-* [Smart Contract](#smart_contract)
-* [Technologies Used](#technologies_used)  
-* [Team Members](#team_members)
+* [How it Works](#how-it-works)
+* [Getting Started](#getting-started)
+* [Smart Contract](#smart-contract)
+* [Technologies Used](#technologies-used)  
+* [Team Members](#team-members)
 
 
 ### Background:
@@ -30,41 +30,41 @@ Now, without further ado, let's meet the nominees vying for the prestigious spot
 
 ---
 
-- #### ***Elon Musk*** - *CEO and Chairman, TechnoKing of Tesla Motors and SpaceX*
+- ***Elon Musk*** - *CEO and Chairman, TechnoKing of Tesla Motors and SpaceX*
 
 ![Test Image 1](Images/Elon.png)
 
-#### Campaign Slogan:  **"DogeCoin to the Moon!"**
+Campaign Slogan:  **"DogeCoin to the Moon!"**
 ---
 ---
-- #### ***Snoop Dogg*** - *aka Calvin Cordozar Broadus, Jr., OG of Long Beach and World Famous American Rapper*
+- ***Snoop Dogg*** - *aka Calvin Cordozar Broadus, Jr., OG of Long Beach and World Famous American Rapper*
 
 ![Test Image 1](Images/Snoop.png)
 
-##### Campaign Slogan:  **"Scooping Up That Bizzy, Making you Dizzy"**
+Campaign Slogan:  **"Scooping Up That Bizzy, Making you Dizzy"**
 ---
 ---
-- #### ***Mike Tyson*** - *former Boxing Heavyweght World Champion and Actor*
+- ***Mike Tyson*** - *former Boxing Heavyweght World Champion and Actor*
 
 ![Test Image 1](Images/MikeTy.png)
 
-##### Campaign Slogan:  **"The Champ of Knocking Out Cash"**
+Campaign Slogan:  **"The Champ of Knocking Out Cash"**
 --- 
 ---
-- ####  ***Billie Eilish*** - *world famous performer and multiple Grammy, AMA, VMA Awards winner*
+- ***Billie Eilish*** - *world famous performer and multiple Grammy, AMA, VMA Awards winner*
 
 ![Test Image 1](Images/BillieE.png)
 
-##### Campaign Slogan:  **"Bitcoin's Bad Girl"**
+Campaign Slogan:  **"Bitcoin's Bad Girl"**
 ---
 ---
-- #### ***Paris Hilton*** - *reality TV star and and heiress to the Hilton Group Hotel fortune*
+- ***Paris Hilton*** - *reality TV star and and heiress to the Hilton Group Hotel fortune*
 
 ![Test Image 1](Images/Parishil.png)
 
-##### Campaign Slogan:  **"That's Hot"**
+Campaign Slogan:  **"That's Hot"**
 ---
-- What You're Creating:
+What You're Creating:
 
 We want to begin the assignment by building a python file in VS Code that will lauch a Streamlit Voting Interface where our exchange members will be able to enter their respective digital wallet codes and securely vote for an small exchange fee.  Votes will be tallied as they arrive in through the application, and we intend to name a winner once we have achieved a quorum result within a specified voting time period.  Results will be definitive and binding, and FameChain will move forward with an all-encompassing global campaign with our new celebrity spokesperson.
 
@@ -124,7 +124,3 @@ The smart contract FameChainBallot.sol, pragma 0.8.0, defines the logic for the 
 ### Daniela Catalan
 ### Jonathan Frazure
 
-
-
-
----
