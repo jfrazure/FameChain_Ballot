@@ -1,3 +1,4 @@
+# load needed libraries
 import os
 import json
 from pathlib import Path
@@ -9,7 +10,7 @@ import pandas as pd
 # New Library
 from PIL import Image
 
-
+# Streamlit web-page config 
 st.set_page_config(page_title="FameChain Ballot", 
                    page_icon=":moneybags:", 
                    layout="wide",) 
@@ -20,6 +21,7 @@ load_dotenv()
 # Connect to Ganache
 w3 = Web3(Web3.HTTPProvider(os.getenv("WEB3_PROVIDER_URL")))
 
+# create variables to the Ganache accounts for testing
 accounts = w3.eth.accounts
 account = accounts[0]
 
@@ -34,7 +36,7 @@ famechain_1 = Image.open("Images/famechain1.jpg")
 famecoin = Image.open("Images/famechaincoin.jpg")
 fame_vote_pic = Image.open("Images/famechainvote.jpg")
 
-# creating a List of the Candidates 
+# creating a List of the Candidates into a dataframe
 candidates_df = pd.DataFrame([
     {"name": "Mike Tyson", "slogan": "The Champ of Knocking Out Cash"},
     {"name": "Elon Musk", "slogan": "Dogecoin To The Moon!"},   
@@ -42,9 +44,12 @@ candidates_df = pd.DataFrame([
     {"name": "Paris Hilton", "slogan": "<img src='Images/Parishil.png'>"},
     {"name": "Billie Eilish", "slogan": "Bitcoin's Bad Girl"}
 ])
+
 #################################
 ##### LOAD_CONTRACT Function #### 
 #################################
+
+# defining the function to load the smart contract into this code
 def load_contract():
     with open("famechain_abi.json") as f:
         contract_abi = json.load(f)
@@ -66,11 +71,11 @@ contract = load_contract()
 # Title message and add 
 # def the webapp pages breakdown
 def main():
-    st.title("The FameChain dApp")
-
+    st.title("FameChain dApp")
+    # creating a navigation bar on the left side of the webapp
     st.sidebar.title("Navigation Bar")
     page = st.sidebar.radio("Go to", ("Welcome", "Candidates","Vote","Results"))
-
+    # defining the pages
     if page == "Welcome":
         welcome_page()
     elif page == "Candidates":
@@ -106,38 +111,35 @@ def welcome_page():
 # Display candidates and their slogans
 def candidates_page():
     with  st.container():
-        #st.write('---')
         st.subheader("Which Crypto Star Shines the Brightest!")
-        #st.write('---')
         st.write('##')
         st.markdown("#### Candidates")
         st.write('---')
-        # left_column, right_column = st.columns((2,1))
-        #with left_column:
-            #candidates = contract.functions.getCandidates().call()
-        #    for candidate in candidates_df:
-        #        st.write(candidates_df["name"], ["slogan"])
-        #with right_column:    
+        # Candidate 1
         st.markdown("## Mike Tyson")
         st.image(tyson_pic)
         st.markdown('### The Champ of Knocking Out Cash.')
         st.write('---')
         st.write('##')
+        # Candidate 2
         st.markdown('## Elon Musk')
         st.image(elon_pic)
         st.markdown('### Dogecoin to the Moon!')
         st.write('---')
         st.write('##')
+        # Candidate 3
         st.markdown('## Snoop dog')
         st.image(snoop_pic)
         st.markdown('### Scooping Up That Bizzy, Making you Dizzy')
         st.write('---')
         st.write('##')
+        # Candidate 4
         st.markdown('## Paris Hilton')
         st.image(paris_pic)
         st.markdown("### That's Hot")
         st.write('---')
         st.write('##')
+        # Candidate 5
         st.markdown('## Billie Ellish')
         st.image(billie_pic)
         st.markdown("### Bitcoin's Bad Girl")
@@ -151,12 +153,13 @@ def vote_page():
         selected_candidate = st.selectbox('Choose a candidate', range(1,6))
         # enter wallet address to cast your vote
         wallet_address = st.text_input("Enter your wallet address to cast your vote!")
+        ### one method to acces the accounts on the Ganache server
         # selected_candidate_index = candidates_df[candidates_df["name"]==selected_candidate].index
-        # voter_account = st.selectbox("Select Account", options=accounts)
+        #voter_account = st.selectbox("Select Account", options=accounts)
         if st.button('Vote'):
             try:
                 if wallet_address:
-                    tx_hash = contract.functions.vote(selected_candidate).transact({'from':wallet_address, "gas":1000000})
+                    tx_hash = contract.functions.vote(selected_candidate).transact({'from':wallet_address, "gas":3000000})
                     st.write('Vote casted!')
                     st.balloons()
                 else:
@@ -172,29 +175,63 @@ def results_page():
         st.image(fame_vote_pic)
         st.write("Click below to see the results")
         st.write("##")
+        # This function is only available when the voting period is ended --> establiished in smart contract / 2 mins for demo
         if st.button("Show Results"):
             try:
                 results = contract.functions.getResults().call()
-                for result in results:
-                    st.write(f"Candidate {result[0]} - Votes: {result[3]}")
+                ### Creating a pie chart that displays after the winner is determined ###
+                # Collect vote counts for each candidate
+                vote_counts = [result[3] for result in results]
+                candidate_names = [candidates_df.loc[i, "name"] for i in range(len(vote_counts))]
+                #candidate_names = [f"Candidate {result[0]}" for result in results]
+
+                # Plot a pie chart
+                fig, ax = plt.subplots()
+                ax.pie(vote_counts, labels=candidate_names, autopct='%1.1f%%', startangle=90)
+                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                # Set background color
+                fig.patch.set_facecolor('darkviolet')
+                # Display the pie chart
+                st.pyplot(fig)
+                # Display the winner
+                winner_index = vote_counts.index(max(vote_counts))
+                winner_name = candidate_names[winner_index]
+                st.markdown(f"# The FameChain Crypto Ambassador is... {winner_name}!")
+                #for result in results:
+                #    st.write(f"Candidate {result[0]} - Votes: {result[3]}")
             except Exception as e:
                 st.error(f"Error: {e}")
-
+        st.write("---")
                 # Add total votes for each candidate
-        st.write("##")
         st.header("Total Votes for Each Candidate")
         st.write('##')
+        # Creating a button to see all votes for all people on the ballot --> functional at all times
         if st.button("See all Votes for each Candidate."):
             try:
                 votes = contract.functions.getAllVotesForCandidates().call()
                 for i, vote_count in enumerate(votes):
                     st.write(f"Candidate {i+1} - Total Votes: {vote_count}")
+
+               # Create a dynamic pie chart
+                vote_counts = [vote_count for vote_count in votes]
+                candidate_names = [candidates_df.loc[i, "name"] for i in range(len(votes))]
+                dynamic_fig, ax = plt.subplots()
+                # Set background color
+                dynamic_fig.patch.set_facecolor('darkviolet')
+                ax.pie(vote_counts, labels=candidate_names, autopct='%1.1f%%')
+                ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+                st.pyplot(dynamic_fig)
+                
+
             except Exception as e:
                 st.error(f"Error: {e}")
-
+        st.write('---')
+        st.write('##')
         # Get total votes for a specific candidate
     candidate_id = st.number_input("Enter Candidate ID:", min_value=1, max_value=6, value=1)
+    # create a button to access the results for selected candidate
     if st.button("Individual Results"):
+        # calling the getTotalVotesForCandidate from smart contract
         total_votes = contract.functions.getTotalVotesForCandidate(candidate_id).call()
         st.write(f"Total Votes for Candidate {candidate_id}: {total_votes}")      
 
