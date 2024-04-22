@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.0;
 // make sure to compile in 0.8.0
 
 
@@ -24,6 +24,12 @@ contract FameChainBallot {
     // variable of the count number of candidates
     uint public candidatesCount;
 
+    // Variable to store the start of the voting period
+    uint public votingStarts;
+
+    // Variable to store the duration of the voting period
+    uint public votingDuration = 11 minutes; // Example duration, adjust as needed
+
     // Creating a end to the voting contract
     uint public votingEnds;
 
@@ -35,10 +41,12 @@ contract FameChainBallot {
         // The owner of the smart construct
         owner = msg.sender;
 
-        // Setting the amount of time the election will stay open --> change in DEMO to 2 mins
-        votingEnds = block.timestamp + 11 minutes;  
-        // change in DEMO to 2 mins 
-        // votingEnds = block.timestamp + 2 minutes;
+        // Set the start of the voting period to the deployment time of the contract
+        votingStarts = block.timestamp;
+        // Setting the amount of time the election will stay open --> change in DEMO to 11 mins
+         votingEnds = votingStarts + votingDuration;  
+        // change in DEMO to 11 mins 
+        // votingEnds = block.timestamp + 24 hours;
         
         // Initialize candidates
         addCandidate("Mike Tyson", "The Champ of Knocking Out Cash", 0);
@@ -63,8 +71,8 @@ contract FameChainBallot {
         require(_candidateId > 0 && _candidateId <= candidatesCount);
 
         // Checks to make sure voter is not putting an incorrect candidateId
-        require(_candidateId < candidatesCount, "Invalid candidate index");
-
+        // require(_candidateId < candidatesCount, "Invalid candidate index");
+        require(_candidateId <= candidatesCount, "Invalid candidate index");
         voters[msg.sender] = true;
 
         // Increment the vote count of the candidate
